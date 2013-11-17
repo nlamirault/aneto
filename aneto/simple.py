@@ -16,9 +16,10 @@
 
 
 from aneto import __author__, CONFIG_FILE
+from aneto.config import get_configuration_filename
 from cliff.command import Command
 import logging
-from os.path import exists, expanduser
+from os.path import exists
 import yaml
 
 
@@ -37,16 +38,14 @@ class Configuration(Command):
 
     log = logging.getLogger(__name__)
 
-    def get_configuration_filename(self):
-        return "%s/.config/%s" % (expanduser("~"), CONFIG_FILE)
-
     def take_action(self, parsed_args):
         #self.app.stdout.write('Configuration:' % CONFIG_FILE)
-        config = self.get_configuration_filename()
-        if exists(config):
-            f = open(config)
-            settings = yaml.load(f)
-            self.app.stdout.write("Configuration:\n%s" % settings)
+        config = load_configuration()
+        if config:
+        # if exists(config):
+        #     f = open(config)
+        #     settings = yaml.load(f)
+            self.app.stdout.write("Configuration:\n%s" % config)
         else:
             self.app.stdout.write("Configuration file %s doesn't exists.\n" %
                                   config)
