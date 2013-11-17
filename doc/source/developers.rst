@@ -13,18 +13,14 @@ Building Documentation
 ======================
 
 The documentation for **aneto** is written in ``rst``  and
-converted to HTML using Sphinx. The build itself is driven by make.
+converted to HTML using ``Sphinx``. The build itself is driven by make.
 You will need the following packages in order to build the docs:
 
-- Sphinx
-- docutils
-
 Once all of the tools are installed into a virtualenv using
-pip, run ``make docs`` to generate the HTML version of the
+pip, run ``make doc`` to generate the HTML version of the
 documentation::
 
-    $ make docs
-    (cd docs && make clean html)
+    $ make doc
     sphinx-build -b html -d build/doctrees   source build/html
     Running Sphinx v1.1.3
     loading pickled environment... done
@@ -45,7 +41,7 @@ documentation::
     Build finished. The HTML pages are in build/html.
 
 The output version of the documentation ends up in
-``./docs/build/html`` inside your sandbox.
+``./doc/build/html`` inside your sandbox.
 
 Running Tests
 =============
@@ -71,3 +67,5 @@ the ``tests`` directory.
 .. _tox: http://codespeak.net/tox
 
 .. _developer-templates:
+
+.. _Sphinx: http://sphinx-doc.org/
