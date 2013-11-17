@@ -53,6 +53,7 @@ setup(
         ],
         'aneto': [
             'info = aneto.simple:Info',
+            'config = aneto.simple:Configuration',
         ],
     },
 

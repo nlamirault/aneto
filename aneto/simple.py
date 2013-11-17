@@ -15,9 +15,10 @@
 #
 
 
-from aneto import __author__
+from aneto import __author__, CONFIG_FILE
 import logging
 from cliff.command import Command
+import yaml
 
 
 class Info(Command):
@@ -28,3 +29,15 @@ class Info(Command):
     def take_action(self, parsed_args):
         self.app.stdout.write('This is a personal backup tool.\n')
         self.app.stdout.write('Copyright (c) %s\n' % __author__)
+
+
+class Configuration(Command):
+    "A command that prints available configuration. "
+
+    log = logging.getLogger(__name__)
+
+    def take_action(self, parsed_args):
+        self.app.stdout.write('Configuration from %s' % CONFIG_FILE)
+        f = open(CONFIG_FILE)
+        settings = yaml.load(f)
+        print settings

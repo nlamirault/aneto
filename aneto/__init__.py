@@ -16,3 +16,6 @@
 
 __version__ = '0.1.0'
 __author__ = "Nicolas Lamirault <nicolas.lamirault@gmail.com>"
+
+
+CONFIG_FILE = 'aneto.yml'
