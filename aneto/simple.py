@@ -14,5 +14,17 @@
 # under the License.
 #
 
-__version__ = '0.1.0'
-__author__ = "Nicolas Lamirault <nicolas.lamirault@gmail.com>"
+
+from aneto import __author__
+import logging
+from cliff.command import Command
+
+
+class Info(Command):
+    "A command that prints information about this tool."
+
+    log = logging.getLogger(__name__)
+
+    def take_action(self, parsed_args):
+        self.app.stdout.write('This is a personal backup tool.\n')
+        self.app.stdout.write('Copyright (c) %s\n' % __author__)
