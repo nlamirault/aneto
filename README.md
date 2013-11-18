@@ -36,6 +36,12 @@ Results are in the *build/sphinx/html* directory.
 Documentation for **aneto** is hosted on
 [readthedocs.org](http://readthedocs.org/docs/aneto/en/latest/).
 
+
+## Changelog
+
+A changelog is available [here](ChangeLog.md).
+
+
 ## Contact
 
 Nicolas Lamirault <nicolas.lamirault@gmail.com>
