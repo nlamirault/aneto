@@ -6,40 +6,27 @@ This tool is a personal backup.
 
 ## Install
 
-* Install Python tools:
-
-        $ apt-get install python-pip
-		$ pip install virtualenvwrapper
-		$ source /usr/local/bin/virtualenvwrapper.sh
-
 * Install dependencies :
 
-        $ mkvirtualenv aneto
-		New python executable in aneto/bin/python
-		Installing Setuptools..................done.
-		Installing Pip.........................done.
-        $ pip install -r requirements.txt
+        $ go get -u github.com/aws/aws-sdk-go/...
 
-## Documentation
+* Build tool :
 
-This documentation is written by contributors, for contributors.
-The source is maintained in the *doc/source* folder using
-[reStructuredText](http://docutils.sourceforge.net/rst.html)
-and built by [Sphinx](http://sphinx-doc.org/)
+		$ go build .
 
-Building Manually:
+## Contributing
 
-    $ sphinx-build -b html doc/source build/sphinx/html
+See [CONTRIBUTING](CONTRIBUTING.md).
 
-Results are in the *build/sphinx/html* directory.
 
-Documentation for **aneto** is hosted on
-[readthedocs.org](http://readthedocs.org/docs/aneto/en/latest/).
+## License
+
+See [LICENSE][] for the complete license.
 
 
 ## Changelog
 
-A changelog is available [here](ChangeLog.md).
+A [changelog](ChangeLog.md) is available
 
 
 ## Contact
