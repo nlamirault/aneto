@@ -16,70 +16,42 @@
 package main
 
 import (
-	"flag"
-	"log"
+	// "flag"
+	"fmt"
+	// "log"
 	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/awsutil"
+	// "github.com/aws/aws-sdk-go/aws/awsutil"
+	"github.com/codegangsta/cli"
 )
 
-var (
-	region        string
-	vault         string
-	printVersion  bool
-	doCreateVault bool
-	doDeleteVault bool
-)
-
-func init() {
-	flag.StringVar(&region, "region", "eu-west-1", "aws region")
-	flag.BoolVar(&printVersion, "version", false, "print version and exit")
-	flag.BoolVar(&doCreateVault, "create", false, "create vault")
-	flag.BoolVar(&doDeleteVault, "delete", false, "delete vault")
-	flag.StringVar(&vault, "vault", "", "vault name")
-
-}
-
-func main() {
-	flag.Parse()
-	if printVersion {
-		log.Println("Version", Version)
-		os.Exit(0)
-	}
-	if doCreateVault {
-		checkArgument(vault, "Glacier vault name")
-		createGlacierVault()
-	}
-	if doDeleteVault {
-		checkArgument(vault, "Glacier vault name")
-		// deleteVault()
-	}
-
-}
-
-func checkArgument(key string, value string) {
-	if key == "" {
-		log.Printf("Please specify %s. Exiting.\n", value)
-		os.Exit(1)
-	}
-}
-
-func getVaultName() string {
-	return os.Getenv("ANETO_VAULT_NAME")
-}
+// region represents the default AWS region
+const region string = "eu-west-1"
 
 func getAWSConfig(region string) *aws.Config {
 	return &aws.Config{Region: aws.String(region)}
-
 }
 
-func createGlacierVault() {
-	log.Printf("Create vault : %s\n", vault)
-	result, err := createVault(getGlacierClient(getAWSConfig(region)), vault)
-	if err != nil {
-		log.Println(err)
-		return
+func makeApp() *cli.App {
+	app := cli.NewApp()
+	app.Name = "aneto"
+	app.Version = Version
+	app.Usage = "A backup tool"
+	app.Author = "Nicolas Lamirault"
+	app.Email = "nicolas.lamirault@gmail.com"
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:  "region",
+			Value: "eu-west-1",
+			Usage: fmt.Sprintf("AWS region"),
+		},
 	}
-	log.Println(awsutil.Prettify(result))
+	app.Commands = Commands
+	return app
+}
+
+func main() {
+	app := makeApp()
+	app.Run(os.Args)
 }

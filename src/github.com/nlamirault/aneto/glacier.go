@@ -28,6 +28,12 @@ func getGlacierClient(cfg *aws.Config) *glacier.Glacier {
 
 func createVault(glacierClient *glacier.Glacier, name string) (*glacier.CreateVaultOutput, error) {
 	return glacierClient.CreateVault(&glacier.CreateVaultInput{
-		VaultName: aws.String(vault),
+		VaultName: aws.String(name),
+	})
+}
+
+func deleteVault(glacierClient *glacier.Glacier, name string) (*glacier.DeleteVaultOutput, error) {
+	return glacierClient.DeleteVault(&glacier.DeleteVaultInput{
+		VaultName: aws.String(name),
 	})
 }
