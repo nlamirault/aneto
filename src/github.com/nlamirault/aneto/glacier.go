@@ -40,7 +40,8 @@ func deleteVault(glacierClient *glacier.Glacier, name string) (*glacier.DeleteVa
 	})
 }
 
-func uploadArchive(glacierClient *glacier.Glacier, archive []byte, description string) (*ArchiveCreationOutput, error) {
+func uploadArchive(glacierClient *glacier.Glacier, name string, archive []byte,
+	description string) (*glacier.ArchiveCreationOutput, error) {
 	return glacierClient.UploadArchive(&glacier.UploadArchiveInput{
 		VaultName:          aws.String(name),
 		ArchiveDescription: aws.String(description),
