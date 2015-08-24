@@ -16,6 +16,8 @@
 package main
 
 import (
+	"bytes"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/glacier"
 )
@@ -36,4 +38,18 @@ func deleteVault(glacierClient *glacier.Glacier, name string) (*glacier.DeleteVa
 	return glacierClient.DeleteVault(&glacier.DeleteVaultInput{
 		VaultName: aws.String(name),
 	})
+}
+
+func uploadArchive(glacierClient *glacier.Glacier, archive []byte, description string) (*ArchiveCreationOutput, error) {
+	return glacierClient.UploadArchive(&glacier.UploadArchiveInput{
+		VaultName:          aws.String(name),
+		ArchiveDescription: aws.String(description),
+		Body:               bytes.NewReader(archive),
+	})
+}
+
+func downloadArchive() {
+}
+
+func deleteArchive() {
 }

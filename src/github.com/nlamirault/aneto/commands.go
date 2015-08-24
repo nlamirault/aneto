@@ -81,3 +81,9 @@ func doDeleteGlacierVault(c *cli.Context) {
 	}
 	log.Println(awsutil.Prettify(result))
 }
+
+func doUploadArchive(c *cli.Context) {
+	log.Printf("Upload archive %s\n", c.String("file"))
+	// result, err := uploadArchive(
+	// 	getAWSConfig(region), c.String("description"))
+}
