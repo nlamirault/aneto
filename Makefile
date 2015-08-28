@@ -79,6 +79,3 @@ release: clean build
 	@rm -fr $(PACKAGE)
 	@addons/github.sh $(VERSION)
 
-# for go-projectile
-gopath:
-	@echo ${GOPATH}

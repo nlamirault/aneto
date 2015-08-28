@@ -1,5 +1,7 @@
 # Aneto
 
+[![Travis](https://img.shields.io/travis/nlamirault/aneto.svg)]()
+
 Aneto Glacier is the largest glacier in the Pyrenees. This tool is a personal backup
 using [Amazon Glacier][]
 
