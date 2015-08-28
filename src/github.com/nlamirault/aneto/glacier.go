@@ -28,6 +28,29 @@ func getGlacierClient(cfg *aws.Config) *glacier.Glacier {
 	return c
 }
 
+func listVaults(glacierClient *glacier.Glacier) (*glacier.ListVaultsOutput, error) {
+	return glacierClient.ListVaults(&glacier.ListVaultsInput{})
+}
+
+func describeVault(glacierClient *glacier.Glacier, name string) (*glacier.DescribeVaultOutput, error) {
+	return glacierClient.DescribeVault(&glacier.DescribeVaultInput{
+		VaultName: aws.String(name),
+	})
+}
+
+func displayVault(glacierClient *glacier.Glacier, name string) (*glacier.InitiateJobOutput, error) {
+
+	params := &glacier.InitiateJobInput{
+		VaultName: aws.String(name),
+		JobParameters: &glacier.JobParameters{
+			InventoryRetrievalParameters: &glacier.InventoryRetrievalJobInput{},
+			Type: aws.String("inventory-retrieval"),
+		},
+	}
+
+	return glacierClient.InitiateJob(params)
+}
+
 func createVault(glacierClient *glacier.Glacier, name string) (*glacier.CreateVaultOutput, error) {
 	return glacierClient.CreateVault(&glacier.CreateVaultInput{
 		VaultName: aws.String(name),
@@ -52,5 +75,10 @@ func uploadArchive(glacierClient *glacier.Glacier, name string, archive []byte,
 func downloadArchive() {
 }
 
-func deleteArchive() {
+func deleteArchive(glacierClient *glacier.Glacier, name string,
+	archiveID string) (*glacier.DeleteArchiveOutput, error) {
+	return glacierClient.DeleteArchive(&glacier.DeleteArchiveInput{
+		VaultName: aws.String(name),
+		ArchiveId: aws.String(archiveID),
+	})
 }
