@@ -2,51 +2,92 @@
 	"version": 0,
 	"dependencies": [
 		{
-			"importpath": "github.com/Sirupsen/logrus",
-			"repository": "https://github.com/Sirupsen/logrus",
-			"revision": "27b713cfd2742876645e3692a488c5e3fd65361d",
-			"branch": "master"
-		},
-		{
-			"importpath": "github.com/aws/aws-sdk-go",
+			"importpath": "github.com/aws/aws-sdk-go/aws",
 			"repository": "https://github.com/aws/aws-sdk-go",
-			"revision": "9ab3fe0b715401c3f00f818aae3e97c1f17bc4c8",
-			"branch": "HEAD"
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/aws"
 		},
 		{
-			"importpath": "github.com/bugsnag/bugsnag-go",
-			"repository": "https://github.com/bugsnag/bugsnag-go",
-			"revision": "9ee24c1db7e2c5b87e7228acb3e587a35124a041",
+			"importpath": "github.com/aws/aws-sdk-go/internal/endpoints",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/internal/endpoints"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/internal/protocol/json/jsonutil",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/internal/protocol/json/jsonutil"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/internal/protocol/jsonrpc",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/internal/protocol/jsonrpc"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/internal/protocol/query",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/internal/protocol/query"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/internal/protocol/rest",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/internal/protocol/rest"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/internal/protocol/restjson",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/internal/protocol/restjson"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/internal/protocol/xml/xmlutil",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/internal/protocol/xml/xmlutil"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/internal/signer/v4",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/internal/signer/v4"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/service/glacier",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/service/glacier"
+		},
+		{
+			"importpath": "github.com/aws/aws-sdk-go/service/sts",
+			"repository": "https://github.com/aws/aws-sdk-go",
+			"revision": "f28e73d4791500a90d49190e0a01b769748cc2a8",
+			"branch": "master",
+			"path": "/service/sts"
+		},
+		{
+			"importpath": "github.com/hashicorp/logutils",
+			"repository": "https://github.com/hashicorp/logutils",
+			"revision": "0dc08b1671f34c4250ce212759ebd880f743d883",
 			"branch": "master"
 		},
 		{
-			"importpath": "github.com/bugsnag/osext",
-			"repository": "https://github.com/bugsnag/osext",
-			"revision": "0dd3f918b21bec95ace9dc86c7e70266cfc5c702",
-			"branch": "master"
-		},
-		{
-			"importpath": "github.com/bugsnag/panicwrap",
-			"repository": "https://github.com/bugsnag/panicwrap",
-			"revision": "e5f9854865b9778a45169fc249e99e338d4d6f27",
-			"branch": "master"
-		},
-		{
-			"importpath": "github.com/codegangsta/cli",
-			"repository": "https://github.com/codegangsta/cli",
-			"revision": "142e6cd241a4dfbf7f07a018f1f8225180018da4",
-			"branch": "master"
-		},
-		{
-			"importpath": "github.com/getsentry/raven-go",
-			"repository": "https://github.com/getsentry/raven-go",
-			"revision": "74c334d7b8aaa4fd1b4fc6aa428c36fed1699e28",
-			"branch": "master"
-		},
-		{
-			"importpath": "github.com/tobi/airbrake-go",
-			"repository": "https://github.com/tobi/airbrake-go",
-			"revision": "5b5e269e1bc398d43f67e43dafff3414a59cd5a2",
+			"importpath": "github.com/mitchellh/cli",
+			"repository": "https://github.com/mitchellh/cli",
+			"revision": "8102d0ed5ea2709ade1243798785888175f6e415",
 			"branch": "master"
 		},
 		{
@@ -54,6 +95,13 @@
 			"repository": "https://github.com/vaughan0/go-ini",
 			"revision": "a98ad7ee00ec53921f08832bc06ecf7fd600e6a1",
 			"branch": "master"
+		},
+		{
+			"importpath": "golang.org/x/crypto/ssh/terminal",
+			"repository": "https://go.googlesource.com/crypto",
+			"revision": "c8b9e6388ef638d5a8a9d865c634befdc46a6784",
+			"branch": "master",
+			"path": "/ssh/terminal"
 		}
 	]
 }
