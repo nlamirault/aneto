@@ -105,4 +105,4 @@ release: clean build test lint vet
 # for goprojectile
 .PHONY: gopath
 gopath:
-	echo GOPATH=`pwd`:`pwd`/vendor
+	@echo `pwd`:`pwd`/vendor
