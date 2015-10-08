@@ -74,7 +74,7 @@ func (c *VaultCommand) Run(args []string) int {
 	} else {
 		logging.SetLogging("INFO")
 	}
-	log.Printf("[DEBUG] Args : %s %s", args, action)
+	//log.Printf("[DEBUG] Args : %s %s", args, action)
 	switch action {
 	case "list":
 		c.doListGlacierVaults(region)
@@ -98,7 +98,13 @@ func (c *VaultCommand) doListGlacierVaults(region string) {
 		c.UI.Error(err.Error())
 		return
 	}
-	c.UI.Info(awsutil.Prettify(result))
+	log.Printf("[DEBUG] %s", awsutil.Prettify(result))
+	for _, vault := range result.VaultList {
+		c.UI.Info(fmt.Sprintf("- %s %s [%d]",
+			*vault.VaultName,
+			*vault.CreationDate,
+			*vault.NumberOfArchives))
+	}
 }
 
 func (c *VaultCommand) doDescribeGlacierVault(region string, name string) {

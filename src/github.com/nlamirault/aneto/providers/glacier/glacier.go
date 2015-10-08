@@ -16,6 +16,7 @@ package glacier
 
 import (
 	"bytes"
+	"log"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/glacier"
@@ -28,17 +29,19 @@ func GetGlacierClient(cfg *aws.Config) *glacier.Glacier {
 }
 
 func ListVaults(glacierClient *glacier.Glacier) (*glacier.ListVaultsOutput, error) {
+	log.Printf("[DEBUG] List Glacier vaults")
 	return glacierClient.ListVaults(&glacier.ListVaultsInput{})
 }
 
 func DescribeVault(glacierClient *glacier.Glacier, name string) (*glacier.DescribeVaultOutput, error) {
+	log.Printf("[DEBUG] Call describe Glacier vault : %s", name)
 	return glacierClient.DescribeVault(&glacier.DescribeVaultInput{
 		VaultName: aws.String(name),
 	})
 }
 
 func DisplayVault(glacierClient *glacier.Glacier, name string) (*glacier.InitiateJobOutput, error) {
-
+	log.Printf("[DEBUG] Call Display Glacier vault : %s", name)
 	params := &glacier.InitiateJobInput{
 		VaultName: aws.String(name),
 		JobParameters: &glacier.JobParameters{
@@ -46,17 +49,18 @@ func DisplayVault(glacierClient *glacier.Glacier, name string) (*glacier.Initiat
 			Type: aws.String("inventory-retrieval"),
 		},
 	}
-
 	return glacierClient.InitiateJob(params)
 }
 
 func CreateVault(glacierClient *glacier.Glacier, name string) (*glacier.CreateVaultOutput, error) {
+	log.Printf("[DEBUG] Call create Glacier vault : %s", name)
 	return glacierClient.CreateVault(&glacier.CreateVaultInput{
 		VaultName: aws.String(name),
 	})
 }
 
 func DeleteVault(glacierClient *glacier.Glacier, name string) (*glacier.DeleteVaultOutput, error) {
+	log.Printf("[DEBUG] Call Delete Glacier vault : %s", name)
 	return glacierClient.DeleteVault(&glacier.DeleteVaultInput{
 		VaultName: aws.String(name),
 	})
@@ -64,6 +68,7 @@ func DeleteVault(glacierClient *glacier.Glacier, name string) (*glacier.DeleteVa
 
 func UploadArchive(glacierClient *glacier.Glacier, name string, archive []byte,
 	description string) (*glacier.ArchiveCreationOutput, error) {
+	log.Printf("[DEBUG] Call Upload archive to Glacier vault : %s", name)
 	return glacierClient.UploadArchive(&glacier.UploadArchiveInput{
 		VaultName:          aws.String(name),
 		ArchiveDescription: aws.String(description),
@@ -71,11 +76,14 @@ func UploadArchive(glacierClient *glacier.Glacier, name string, archive []byte,
 	})
 }
 
-func DownloadArchive() {
+func DownloadArchive(glacierClient *glacier.Glacier, name string) {
+	log.Printf("[DEBUG] Call Download archive from Glacier vault : %s", name)
 }
 
 func DeleteArchive(glacierClient *glacier.Glacier, name string,
 	archiveID string) (*glacier.DeleteArchiveOutput, error) {
+	log.Printf("[DEBUG] Call Delete archive from Glacier vault : %s %s",
+		name, archiveID)
 	return glacierClient.DeleteArchive(&glacier.DeleteArchiveInput{
 		VaultName: aws.String(name),
 		ArchiveId: aws.String(archiveID),

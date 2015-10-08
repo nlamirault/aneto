@@ -18,7 +18,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
+	//"log"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws/awsutil"
@@ -73,7 +73,7 @@ func (c *ArchiveCommand) Run(args []string) int {
 	} else {
 		logging.SetLogging("INFO")
 	}
-	log.Printf("[DEBUG] Args : %s", args)
+	//log.Printf("[DEBUG] Args : %s", args)
 	return 0
 }
 
