@@ -41,8 +41,6 @@ func realMain() int {
 	exitCode, err := cli.Run()
 	if err != nil {
 		Ui.Error(fmt.Sprintf("Error executing CLI: %s", err.Error()))
-		// fmt.Printf(colorstring.Color(
-		// 	"[red] Error executing CLI: " + err.Error() + "\n"))
 		return 1
 	}
 
