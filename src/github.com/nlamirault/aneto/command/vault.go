@@ -23,7 +23,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/awsutil"
 	"github.com/mitchellh/cli"
 
-	"github.com/nlamirault/aneto/logging"
 	"github.com/nlamirault/aneto/providers/glacier"
 )
 
@@ -68,13 +67,7 @@ func (c *VaultCommand) Run(args []string) int {
 	if err := f.Parse(args); err != nil {
 		return 1
 	}
-	if debug {
-		c.UI.Info("Debug mode enabled.")
-		logging.SetLogging("DEBUG")
-	} else {
-		logging.SetLogging("INFO")
-	}
-	//log.Printf("[DEBUG] Args : %s %s", args, action)
+	setupLogging(debug)
 	switch action {
 	case "list":
 		c.doListGlacierVaults(region)
@@ -91,7 +84,7 @@ func (c *VaultCommand) Run(args []string) int {
 }
 
 func (c *VaultCommand) doListGlacierVaults(region string) {
-	c.UI.Info("List Vaults")
+	c.UI.Info("List Vaults :")
 	result, err := glacier.ListVaults(
 		glacier.GetGlacierClient(getAWSConfig(region)))
 	if err != nil {
@@ -100,7 +93,7 @@ func (c *VaultCommand) doListGlacierVaults(region string) {
 	}
 	log.Printf("[DEBUG] %s", awsutil.Prettify(result))
 	for _, vault := range result.VaultList {
-		c.UI.Info(fmt.Sprintf("- %s %s [%d]",
+		c.UI.Output(fmt.Sprintf("- %s %s [%d]",
 			*vault.VaultName,
 			*vault.CreationDate,
 			*vault.NumberOfArchives))
@@ -108,14 +101,18 @@ func (c *VaultCommand) doListGlacierVaults(region string) {
 }
 
 func (c *VaultCommand) doDescribeGlacierVault(region string, name string) {
-	c.UI.Info(fmt.Sprintf("Describe vault : %s\n", name))
-	result, err := glacier.DescribeVault(
+	c.UI.Info(fmt.Sprintf("Describe vault %s :", name))
+	vault, err := glacier.DescribeVault(
 		glacier.GetGlacierClient(getAWSConfig(region)), name)
 	if err != nil {
 		c.UI.Error(err.Error())
 		return
 	}
-	c.UI.Info(awsutil.Prettify(result))
+	log.Printf("[DEBUG] %s", (awsutil.Prettify(vault)))
+	c.UI.Output(fmt.Sprintf("- %s %s [%d]",
+		*vault.VaultName,
+		*vault.CreationDate,
+		*vault.NumberOfArchives))
 }
 
 func (c *VaultCommand) doDisplayGlacierVault(region string, name string) {

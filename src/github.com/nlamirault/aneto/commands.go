@@ -40,7 +40,7 @@ func init() {
 			ErrorWriter: os.Stderr,
 		},
 		OutputColor: cli.UiColorNone,
-		InfoColor:   cli.UiColorNone,
+		InfoColor:   cli.UiColorGreen,
 		ErrorColor:  cli.UiColorRed,
 	}
 
