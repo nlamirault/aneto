@@ -89,3 +89,12 @@ func DeleteArchive(glacierClient *glacier.Glacier, name string,
 		ArchiveId: aws.String(archiveID),
 	})
 }
+
+func DescribeJob(glacierClient *glacier.Glacier, name string, jobID string) (*glacier.JobDescription, error) {
+	log.Printf("[DEBUG] Call Describe Job from Glacier vault : %s %s",
+		name, jobID)
+	return glacierClient.DescribeJob(&glacier.DescribeJobInput{
+		VaultName: aws.String(name),
+		JobId:     aws.String(jobID),
+	})
+}

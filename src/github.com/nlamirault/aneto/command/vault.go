@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awsutil"
@@ -43,7 +44,7 @@ Options:
 
 Action :
         list                        List vaults
-        desc                        Describe vault
+        get                         Describe vault
         display                     Display the vault inventory
         create                      Create a new vault
         delete                      Delete an existing vault
@@ -108,7 +109,7 @@ func (c *VaultCommand) doDescribeGlacierVault(config *aws.Config, name string) {
 		c.UI.Error(err.Error())
 		return
 	}
-	log.Printf("[DEBUG] %s", (awsutil.Prettify(vault)))
+	log.Printf("[DEBUG] %s", awsutil.Prettify(vault))
 	c.UI.Output(fmt.Sprintf("- %s %s [%d]",
 		*vault.VaultName,
 		*vault.CreationDate,
@@ -116,34 +117,45 @@ func (c *VaultCommand) doDescribeGlacierVault(config *aws.Config, name string) {
 }
 
 func (c *VaultCommand) doDisplayGlacierVault(config *aws.Config, name string) {
-	c.UI.Info(fmt.Sprintf("Display vault inventory : %s\n", name))
-	result, err := glacier.DisplayVault(
-		glacier.GetGlacierClient(config), name)
+	c.UI.Info(fmt.Sprintf("Display vault inventory : %s", name))
+	client := glacier.GetGlacierClient(config)
+	job, err := glacier.DisplayVault(client, name)
 	if err != nil {
 		c.UI.Error(err.Error())
 		return
 	}
-	c.UI.Info(awsutil.Prettify(result))
+	log.Printf("[DEBUG] %s", awsutil.Prettify(job))
+	statusCode := "InProgress"
+	for statusCode == "InProgress" {
+		desc, err := glacier.DescribeJob(client, name, *job.JobId)
+		if err != nil {
+			c.UI.Error(err.Error())
+			return
+		}
+		log.Printf("[DEBUG] %s", awsutil.Prettify(desc))
+		c.UI.Output(fmt.Sprintf("- %s ", *desc.StatusCode))
+		time.Sleep(2000 * time.Millisecond)
+	}
 }
 
 func (c *VaultCommand) doCreateGlacierVault(config *aws.Config, name string) {
-	c.UI.Info(fmt.Sprintf("Create vault : %s\n", name))
+	c.UI.Info(fmt.Sprintf("Create vault : %s", name))
 	result, err := glacier.CreateVault(
 		glacier.GetGlacierClient(config), name)
 	if err != nil {
 		c.UI.Error(err.Error())
 		return
 	}
-	c.UI.Info(awsutil.Prettify(result))
+	log.Printf("[DEBUG] %s", awsutil.Prettify(result))
 }
 
 func (c *VaultCommand) doDeleteGlacierVault(config *aws.Config, name string) {
-	c.UI.Info(fmt.Sprintf("Delete vault : %s\n", name))
+	c.UI.Info(fmt.Sprintf("Delete vault : %s", name))
 	result, err := glacier.DeleteVault(
 		glacier.GetGlacierClient(config), name)
 	if err != nil {
 		c.UI.Error(err.Error())
 		return
 	}
-	c.UI.Info(awsutil.Prettify(result))
+	log.Printf("[DEBUG] %s", awsutil.Prettify(result))
 }
