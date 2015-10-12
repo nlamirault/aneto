@@ -21,10 +21,10 @@ import (
 	//"log"
 	"strings"
 
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awsutil"
 	"github.com/mitchellh/cli"
 
-	"github.com/nlamirault/aneto/logging"
 	"github.com/nlamirault/aneto/providers/glacier"
 )
 
@@ -34,7 +34,7 @@ type ArchiveCommand struct {
 
 func (c *ArchiveCommand) Help() string {
 	helpText := `
-Usage: aneto archive [action]
+Usage: aneto archive [options] --action=action
 	Manage archive from Amazon Glacier
 Options:
 	--debug                       Debug mode enabled
@@ -56,34 +56,38 @@ func (c *ArchiveCommand) Synopsis() string {
 
 func (c *ArchiveCommand) Run(args []string) int {
 	var debug bool
-	var name, region, action string
+	var name, region, action, key, file string
 	f := flag.NewFlagSet("archive", flag.ContinueOnError)
 	f.Usage = func() { c.UI.Output(c.Help()) }
 	f.BoolVar(&debug, "debug", false, "Debug mode enabled")
 	f.StringVar(&name, "name", "", "Glacier vault's name")
 	f.StringVar(&region, "region", "", "AWS region name")
+	f.StringVar(&key, "key", "", "Key into the archive")
+	f.StringVar(&file, "file", "", "File into the archive")
 	f.StringVar(&action, "action", "", "Action to perform")
 
 	if err := f.Parse(args); err != nil {
 		return 1
 	}
-	if debug {
-		c.UI.Info("Debug mode enabled.")
-		logging.SetLogging("DEBUG")
-	} else {
-		logging.SetLogging("INFO")
+	config := getAWSConfig(region, debug)
+	switch action {
+	case "get":
+		c.doGetArchive(config, name, key)
+	case "put":
+		c.doPutArchive(config, name, key, file)
+		// case "delete":
+		// 	c.doDeleteArchive(config, name, archiveID)
 	}
-	//log.Printf("[DEBUG] Args : %s", args)
 	return 0
 }
 
-func (c *ArchiveCommand) doGetArchive(key string) {
+func (c *ArchiveCommand) doGetArchive(config *aws.Config, name string, key string) {
 	c.UI.Info(fmt.Sprintf("Retrieve archive %s\n", key))
 	// result, err := glacier.UploadArchive(
 	// 	getAWSConfig(region), c.String("description"))
 }
 
-func (c *ArchiveCommand) doPutArchive(region string, name string, key string, file string) {
+func (c *ArchiveCommand) doPutArchive(config *aws.Config, name string, key string, file string) {
 	c.UI.Info(fmt.Sprintf("Upload archive %s : %s\n", key, file))
 	data, err := ioutil.ReadFile(file)
 	if err != nil {
@@ -91,7 +95,7 @@ func (c *ArchiveCommand) doPutArchive(region string, name string, key string, fi
 		return
 	}
 	result, err := glacier.UploadArchive(
-		glacier.GetGlacierClient(getAWSConfig(region)),
+		glacier.GetGlacierClient(config),
 		name,
 		data,
 		key)
@@ -102,15 +106,15 @@ func (c *ArchiveCommand) doPutArchive(region string, name string, key string, fi
 	c.UI.Info(awsutil.Prettify(result))
 }
 
-func (c *ArchiveCommand) doDeleteArchive(region string, name string, archiveID string) {
-	c.UI.Info(fmt.Sprintf("Delete archive %s %s\n", name, archiveID))
-	result, err := glacier.DeleteArchive(
-		glacier.GetGlacierClient(getAWSConfig(region)),
-		name,
-		archiveID)
-	if err != nil {
-		c.UI.Error(err.Error())
-		return
-	}
-	c.UI.Info(awsutil.Prettify(result))
-}
+// func (c *ArchiveCommand) doDeleteArchive(config *aws.Config, name string, archiveID string) {
+// 	c.UI.Info(fmt.Sprintf("Delete archive %s %s\n", name, archiveID))
+// 	result, err := glacier.DeleteArchive(
+// 		glacier.GetGlacierClient(config),
+// 		name,
+// 		archiveID)
+// 	if err != nil {
+// 		c.UI.Error(err.Error())
+// 		return
+// 	}
+// 	c.UI.Info(awsutil.Prettify(result))
+// }

@@ -20,14 +20,16 @@ import (
 	"github.com/nlamirault/aneto/logging"
 )
 
-func getAWSConfig(region string) *aws.Config {
-	return &aws.Config{Region: aws.String(region)}
-}
-
-func setupLogging(debug bool) {
+func getAWSConfig(region string, debug bool) *aws.Config {
 	if debug {
 		logging.SetLogging("DEBUG")
-	} else {
-		logging.SetLogging("INFO")
+		return &aws.Config{
+			Region:   aws.String(region),
+			LogLevel: aws.LogLevel(aws.LogDebugWithHTTPBody),
+		}
+	}
+	logging.SetLogging("INFO")
+	return &aws.Config{
+		Region: aws.String(region),
 	}
 }

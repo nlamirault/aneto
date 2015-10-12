@@ -20,6 +20,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awsutil"
 	"github.com/mitchellh/cli"
 
@@ -32,7 +33,7 @@ type VaultCommand struct {
 
 func (c *VaultCommand) Help() string {
 	helpText := `
-Usage: aneto vault [options]
+Usage: aneto vault [options] --action=action
 	Manage vault from Amazon Glacier
 Options:
 	--debug                       Debug mode enabled
@@ -67,26 +68,25 @@ func (c *VaultCommand) Run(args []string) int {
 	if err := f.Parse(args); err != nil {
 		return 1
 	}
-	setupLogging(debug)
+	config := getAWSConfig(region, debug)
 	switch action {
 	case "list":
-		c.doListGlacierVaults(region)
+		c.doListGlacierVaults(config)
 	case "get":
-		c.doDescribeGlacierVault(region, name)
+		c.doDescribeGlacierVault(config, name)
 	case "display":
-		c.doDisplayGlacierVault(region, name)
+		c.doDisplayGlacierVault(config, name)
 	case "create":
-		c.doCreateGlacierVault(region, name)
+		c.doCreateGlacierVault(config, name)
 	case "delete":
-		c.doDeleteGlacierVault(region, name)
+		c.doDeleteGlacierVault(config, name)
 	}
 	return 0
 }
 
-func (c *VaultCommand) doListGlacierVaults(region string) {
+func (c *VaultCommand) doListGlacierVaults(config *aws.Config) {
 	c.UI.Info("List Vaults :")
-	result, err := glacier.ListVaults(
-		glacier.GetGlacierClient(getAWSConfig(region)))
+	result, err := glacier.ListVaults(glacier.GetGlacierClient(config))
 	if err != nil {
 		c.UI.Error(err.Error())
 		return
@@ -100,10 +100,10 @@ func (c *VaultCommand) doListGlacierVaults(region string) {
 	}
 }
 
-func (c *VaultCommand) doDescribeGlacierVault(region string, name string) {
+func (c *VaultCommand) doDescribeGlacierVault(config *aws.Config, name string) {
 	c.UI.Info(fmt.Sprintf("Describe vault %s :", name))
 	vault, err := glacier.DescribeVault(
-		glacier.GetGlacierClient(getAWSConfig(region)), name)
+		glacier.GetGlacierClient(config), name)
 	if err != nil {
 		c.UI.Error(err.Error())
 		return
@@ -115,10 +115,10 @@ func (c *VaultCommand) doDescribeGlacierVault(region string, name string) {
 		*vault.NumberOfArchives))
 }
 
-func (c *VaultCommand) doDisplayGlacierVault(region string, name string) {
+func (c *VaultCommand) doDisplayGlacierVault(config *aws.Config, name string) {
 	c.UI.Info(fmt.Sprintf("Display vault inventory : %s\n", name))
 	result, err := glacier.DisplayVault(
-		glacier.GetGlacierClient(getAWSConfig(region)), name)
+		glacier.GetGlacierClient(config), name)
 	if err != nil {
 		c.UI.Error(err.Error())
 		return
@@ -126,10 +126,10 @@ func (c *VaultCommand) doDisplayGlacierVault(region string, name string) {
 	c.UI.Info(awsutil.Prettify(result))
 }
 
-func (c *VaultCommand) doCreateGlacierVault(region string, name string) {
+func (c *VaultCommand) doCreateGlacierVault(config *aws.Config, name string) {
 	c.UI.Info(fmt.Sprintf("Create vault : %s\n", name))
 	result, err := glacier.CreateVault(
-		glacier.GetGlacierClient(getAWSConfig(region)), name)
+		glacier.GetGlacierClient(config), name)
 	if err != nil {
 		c.UI.Error(err.Error())
 		return
@@ -137,10 +137,10 @@ func (c *VaultCommand) doCreateGlacierVault(region string, name string) {
 	c.UI.Info(awsutil.Prettify(result))
 }
 
-func (c *VaultCommand) doDeleteGlacierVault(region string, name string) {
+func (c *VaultCommand) doDeleteGlacierVault(config *aws.Config, name string) {
 	c.UI.Info(fmt.Sprintf("Delete vault : %s\n", name))
 	result, err := glacier.DeleteVault(
-		glacier.GetGlacierClient(getAWSConfig(region)), name)
+		glacier.GetGlacierClient(config), name)
 	if err != nil {
 		c.UI.Error(err.Error())
 		return
