@@ -1,9 +1,16 @@
 # Aneto
 
-[![Circle CI](https://circleci.com/gh/nlamirault/aneto.svg?style=svg)](https://circleci.com/gh/nlamirault/aneto)
+[![License Apache 2][badge-license]](LICENSE)
+[![GitHub version](https://badge.fury.io/gh/nlamirault%2Faneto.svg)](https://badge.fury.io/gh/nlamirault%2Faneto)
 
 Aneto Glacier is the largest glacier in the Pyrenees. This tool is a personal backup
 using [Amazon Glacier][]
+
+Master :
+* [![Circle CI](https://circleci.com/gh/nlamirault/aneto/tree/master.svg?style=svg)](https://circleci.com/gh/nlamirault/aneto/tree/master)
+
+Develop :
+* [![Circle CI](https://circleci.com/gh/nlamirault/aneto/tree/develop.svg?style=svg)](https://circleci.com/gh/nlamirault/aneto/tree/develop)
 
 ## Usage
 
@@ -62,5 +69,6 @@ A [changelog](ChangeLog.md) is available
 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 
+[badge-license]: https://img.shields.io/badge/license-Apache2-green.svg?style=flat
 
 [Amazon Glacier]: https://aws.amazon.com/fr/glacier/

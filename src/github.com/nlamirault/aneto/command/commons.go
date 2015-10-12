@@ -16,8 +16,20 @@ package command
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
+
+	"github.com/nlamirault/aneto/logging"
 )
 
-func getAWSConfig(region string) *aws.Config {
-	return &aws.Config{Region: aws.String(region)}
+func getAWSConfig(region string, debug bool) *aws.Config {
+	if debug {
+		logging.SetLogging("DEBUG")
+		return &aws.Config{
+			Region:   aws.String(region),
+			LogLevel: aws.LogLevel(aws.LogDebugWithHTTPBody),
+		}
+	}
+	logging.SetLogging("INFO")
+	return &aws.Config{
+		Region: aws.String(region),
+	}
 }
