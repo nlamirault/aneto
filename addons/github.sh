@@ -37,31 +37,30 @@ git tag $VERSION
 git push --tags
 
 echo -e "\033[32;01m[$APP] Build image \033[0m"
-docker build -t aneto/release .
+docker build -t $REPO/release .
 
 echo -e "\033[32;01m[$APP] Make binaries \033[0m"
 docker run --rm \
        -v `pwd`:/tmp/ \
-       aneto/release \
+       $REPO/release \
        gox "${OS_PLATFORM_ARG[@]}" "${OS_ARCH_ARG[@]}" -output="/tmp/aneto_{{.OS}}-{{.Arch}}"
 
 echo -e "\033[32;01m[$APP] Make release \033[0m"
-docker run --rm -e GITHUB_TOKEN aneto/release \
+docker run --rm -e GITHUB_TOKEN $REPO/release \
     github-release release \
     --user $USERNAME \
     --repo $REPO \
     --tag $VERSION \
     --name $VERSION \
     --description ""
-    # --pre-release \
 
-# echo -e "\033[32;01m[$APP] Upload archive \033[0m"
-# for BINARY in aneto_*; do
-#     docker run --rm -e GITHUB_TOKEN -v `pwd`:/go/src/github.com/nlamirault/aneto \
-#        aneto/release github-release upload \
-#        --user $USERNAME \
-#        --repo $REPO \
-#        --tag $VERSION \
-#        --name $BINARY \
-#        --file $BINARY
-# done
+echo -e "\033[32;01m[$APP] Upload archive \033[0m"
+for BINARY in aneto_*; do
+    docker run --rm -e GITHUB_TOKEN -v `pwd`:/go/src/github.com/nlamirault/aneto \
+           $REPO/release github-release upload \
+           --user $USERNAME \
+           --repo $REPO \
+           --tag $VERSION \
+           --name $BINARY \
+           --file $BINARY
+done
